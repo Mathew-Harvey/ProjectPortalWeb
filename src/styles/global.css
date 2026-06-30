@@ -232,3 +232,12 @@ code { background: #f1f5f8; padding: 1px 5px; border-radius: 5px; font-size: 0.8
 .map-table th, .map-table td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
 .map-table th { color: var(--muted); font-size: .78rem; text-transform: uppercase; letter-spacing: .4px; }
 .map-table tr:last-child td { border-bottom: none; }
+
+/* ── invite banner + claim modal ── */
+.invite-banner { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 18px; border-left: 4px solid var(--brand-2); background: #f1f8fa; }
+.invite-banner strong { display: block; }
+@media (max-width: 560px) { .invite-banner { flex-direction: column; align-items: flex-start; } }
+.modal-overlay { position: fixed; inset: 0; background: rgba(16,36,47,.5); display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 100; }
+.modal { width: 100%; max-width: 420px; }
+.modal h2 { margin-bottom: 6px; }
+.modal-actions { display: flex; gap: 8px; margin-top: 4px; }

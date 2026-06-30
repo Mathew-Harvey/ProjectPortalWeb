@@ -7,7 +7,7 @@ const API_BASE = `${API_HOST}/api`;
 
 // Endpoints where a 401 is a normal outcome (probing the session, wrong
 // password) and must NOT trigger the session-expired sign-out path.
-const AUTH_OPEN_PATHS = new Set(['/auth/login', '/auth/register', '/auth/me']);
+const AUTH_OPEN_PATHS = new Set(['/auth/login', '/auth/register', '/auth/me', '/auth/claim-invite']);
 
 function notifySessionExpired(detail) {
   if (typeof window === 'undefined') return;
@@ -57,6 +57,7 @@ export const api = {
   login: (body) => request('/auth/login', { method: 'POST', body: JSON.stringify(body) }),
   logout: () => request('/auth/logout', { method: 'POST' }),
   me: () => request('/auth/me'),
+  claimInvite: (token, password) => request('/auth/claim-invite', { method: 'POST', body: JSON.stringify({ token, password }) }),
 
   // Projects
   listProjects: () => request('/projects'),
@@ -74,6 +75,7 @@ export const api = {
   // Work items / lifecycle
   createWorkItem: (body) => request('/work-items', { method: 'POST', body: JSON.stringify(body) }),
   getWorkItem: (id) => request(`/work-items/${id}`),
+  getInviteView: (id, token) => request(`/work-items/${id}/invite-view?token=${encodeURIComponent(token)}`),
   workItemEvents: (id) => request(`/work-items/${id}/events`),
   captureInspection: (id, body) => request(`/work-items/${id}/inspection`, { method: 'POST', body: JSON.stringify(body) }),
   submitSpec: (id, body) => request(`/work-items/${id}/spec`, { method: 'POST', body: JSON.stringify(body) }),

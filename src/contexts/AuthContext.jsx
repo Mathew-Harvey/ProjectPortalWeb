@@ -50,6 +50,15 @@ export function AuthProvider({ children }) {
     return data;
   }
 
+  // Complete an emailed step invite: creates the account (or signs in) and
+  // establishes the session.
+  async function claim(token, password) {
+    const data = await api.claimInvite(token, password);
+    setUser(data.user);
+    await refreshOrg();
+    return data;
+  }
+
   async function refreshOrg() {
     try {
       const data = await api.me();
@@ -64,7 +73,7 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, org, loading, login, register, logout }}>
+    <AuthContext.Provider value={{ user, org, loading, login, register, claim, logout }}>
       {children}
     </AuthContext.Provider>
   );

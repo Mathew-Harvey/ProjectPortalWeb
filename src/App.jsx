@@ -58,10 +58,12 @@ export default function App() {
         <Route path="/register" element={<GuestRoute><RegisterPage /></GuestRoute>} />
         {/* Help is public — reachable by anyone, signed in or not. */}
         <Route path="/help" element={<HelpPage />} />
+        {/* Work item is public-capable: a session OR a valid ?invite= token.
+            The page itself redirects to /login when neither is present. */}
+        <Route path="/work-items/:id" element={<WorkItemPage />} />
         <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
           <Route path="/" element={<DashboardPage />} />
           <Route path="/work-items/new" element={<NewWorkItemPage />} />
-          <Route path="/work-items/:id" element={<WorkItemPage />} />
           <Route path="/timeline" element={<TimelinePage />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
