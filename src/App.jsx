@@ -8,6 +8,7 @@ import DashboardPage from './pages/DashboardPage';
 import NewWorkItemPage from './pages/NewWorkItemPage';
 import WorkItemPage from './pages/WorkItemPage';
 import TimelinePage from './pages/TimelinePage';
+import HelpPage from './pages/HelpPage';
 
 class ErrorBoundary extends Component {
   constructor(props) {
@@ -60,6 +61,7 @@ export default function App() {
           <Route path="/work-items/new" element={<NewWorkItemPage />} />
           <Route path="/work-items/:id" element={<WorkItemPage />} />
           <Route path="/timeline" element={<TimelinePage />} />
+          <Route path="/help" element={<HelpPage />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

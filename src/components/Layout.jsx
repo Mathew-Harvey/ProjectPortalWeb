@@ -14,6 +14,7 @@ export default function Layout() {
   const navItems = [
     { to: '/', label: 'Repair register' },
     { to: '/timeline', label: 'Event timeline' },
+    { to: '/help', label: 'Help' },
   ];
 
   return (
