@@ -9,6 +9,11 @@ const DEMO = [
   { email: 'client@franmarine.com.au', label: 'Client' },
 ];
 
+// The seeded demo-login password. Set VITE_DEMO_PASSWORD at build time to match
+// the API's SEED_PASSWORD; defaults to the dev value. Keeping it in an env var
+// avoids committing the real deployed password to the repo.
+const DEMO_PASSWORD = import.meta.env.VITE_DEMO_PASSWORD || 'Password123';
+
 export default function LoginPage() {
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -55,9 +60,9 @@ export default function LoginPage() {
         <p className="muted auth-foot">No account? <Link to="/register">Register</Link></p>
 
         <div className="demo-box">
-          <div className="demo-title">Demo logins (password <code>Password123</code>)</div>
+          <div className="demo-title">Demo logins (password <code>{DEMO_PASSWORD}</code>)</div>
           {DEMO.map((d) => (
-            <button key={d.email} className="demo-row" onClick={() => { setEmail(d.email); setPassword('Password123'); }}>
+            <button key={d.email} className="demo-row" onClick={() => { setEmail(d.email); setPassword(DEMO_PASSWORD); }}>
               <span>{d.label}</span><code>{d.email}</code>
             </button>
           ))}
