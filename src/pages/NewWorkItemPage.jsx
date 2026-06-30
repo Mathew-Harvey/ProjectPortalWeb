@@ -11,6 +11,7 @@ export default function NewWorkItemPage() {
   const [method, setMethod] = useState('weld');
   const [refCode, setRefCode] = useState('');
   const [locationRef, setLocationRef] = useState('');
+  const [notify, setNotify] = useState('');
   const [rdsTemplates, setRdsTemplates] = useState({});
   const [data, setData] = useState({});
   const [error, setError] = useState('');
@@ -41,11 +42,16 @@ export default function NewWorkItemPage() {
     setError('');
     setBusy(true);
     try {
+      const notifyEmails = notify
+        .split(/[\s,;]+/)
+        .map((e) => e.trim())
+        .filter((e) => e.includes('@'));
       const { workItem } = await api.createWorkItem({
         projectId: project.id,
         refCode: refCode.trim(),
         locationRef: locationRef.trim(),
         method,
+        notifyEmails,
         inspection: Object.keys(data).length ? { data } : undefined,
       });
       navigate(`/work-items/${workItem.id}`);
@@ -84,6 +90,16 @@ export default function NewWorkItemPage() {
             <input className="input" value={locationRef} onChange={(e) => setLocationRef(e.target.value)} placeholder="e.g. Pile P-14, splash zone" />
           </label>
         </div>
+
+        <label className="field">
+          <span>Notify (extra emails)</span>
+          <input className="input" value={notify} onChange={(e) => setNotify(e.target.value)}
+            placeholder="engineer@example.com, client@example.com" />
+          <span className="tform-help">
+            Optional. These addresses are emailed — alongside the responsible role — at each step that needs them
+            (spec, execution, QA sign-off, close). Separate with commas.
+          </span>
+        </label>
 
         <h3 className="section-title">{def?.title || 'Repair Detail Sheet'}</h3>
         {def ? <TemplateForm definition={def} value={data} onChange={setData} /> : <p className="muted">Loading template…</p>}

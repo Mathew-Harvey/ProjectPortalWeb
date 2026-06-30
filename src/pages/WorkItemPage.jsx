@@ -53,6 +53,9 @@ export default function WorkItemPage() {
           <Link to="/" className="back-link">← Register</Link>
           <h1 className="wi-title">{w.ref_code} <StatusBadge status={w.status} /></h1>
           <p className="muted">{w.location_ref || 'No location'} · <MethodBadge method={w.method} /></p>
+          {Array.isArray(w.notify_emails) && w.notify_emails.length > 0 && (
+            <p className="muted small">✉ Notifying: {w.notify_emails.join(', ')}</p>
+          )}
         </div>
         <a className="btn btn-ghost" href={docpackUrl(w.id)} target="_blank" rel="noreferrer">Export doc pack (PDF)</a>
       </div>
