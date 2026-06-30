@@ -241,3 +241,48 @@ code { background: #f1f5f8; padding: 1px 5px; border-radius: 5px; font-size: 0.8
 .modal { width: 100%; max-width: 420px; }
 .modal h2 { margin-bottom: 6px; }
 .modal-actions { display: flex; gap: 8px; margin-top: 4px; }
+
+/* ── account menu ── */
+.topbar-right { position: relative; }
+.account-btn { display: flex; align-items: center; gap: 9px; background: rgba(255,255,255,.10); border: 1px solid rgba(255,255,255,.18); color: #fff; padding: 5px 10px; border-radius: 8px; cursor: pointer; }
+.account-btn:hover { background: rgba(255,255,255,.18); }
+.account-avatar { width: 26px; height: 26px; border-radius: 50%; background: var(--brand-2); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: .85rem; flex-shrink: 0; }
+.account-meta { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.15; }
+.account-caret { font-size: .7rem; opacity: .8; }
+.account-menu { position: absolute; right: 0; top: calc(100% + 8px); min-width: 220px; padding: 6px; z-index: 50; }
+.account-menu-head { padding: 8px 10px 10px; border-bottom: 1px solid var(--line); margin-bottom: 4px; }
+.account-menu-name { font-weight: 700; }
+.account-menu-item { display: block; width: 100%; text-align: left; background: none; border: none; padding: 9px 10px; border-radius: 7px; font-size: .9rem; font-weight: 600; color: var(--ink); cursor: pointer; }
+.account-menu-item:hover { background: #f1f5f8; text-decoration: none; }
+.account-menu-item.danger { color: var(--err); }
+
+/* ── users table ── */
+.table-scroll { overflow-x: auto; }
+.users-table td, .users-table th { white-space: nowrap; }
+.users-table .input-sm { padding: 4px 8px; font-size: .85rem; }
+.input-sm { padding: 4px 8px; font-size: .85rem; }
+.users-actions { display: flex; gap: 6px; }
+.row-inactive { opacity: .55; }
+
+/* ── responsive / phones ── */
+html, body { max-width: 100%; overflow-x: hidden; }
+img, table { max-width: 100%; }
+
+@media (max-width: 760px) {
+  .topbar-inner { gap: 10px; padding: 0 12px; }
+  .brand-sub { display: none; }
+  .topnav { gap: 2px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .navlink { padding: 6px 9px; font-size: .85rem; white-space: nowrap; }
+  .account-meta { display: none; }       /* avatar-only account button on mobile */
+  .content-inner { padding: 16px 12px 40px; }
+  .page-head { flex-wrap: wrap; }
+  .page-head .btn, .page-head a.btn { margin-top: 4px; }
+  .readout-row { grid-template-columns: 1fr; gap: 1px; margin-bottom: 8px; }
+  .readout-row dt { font-weight: 600; }
+  .map-table { font-size: .82rem; }
+  .stepper { gap: 2px; }
+  .step-dot { width: 24px; height: 24px; font-size: .72rem; }
+  .step-label { font-size: .66rem; }
+  .help-toc ol { columns: 1; }
+  .spec-row, .itp-row { flex-wrap: wrap; }
+}

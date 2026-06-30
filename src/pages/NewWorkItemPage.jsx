@@ -11,7 +11,7 @@ export default function NewWorkItemPage() {
   const [method, setMethod] = useState('weld');
   const [refCode, setRefCode] = useState('');
   const [locationRef, setLocationRef] = useState('');
-  const [notify, setNotify] = useState('');
+  const [assignees, setAssignees] = useState({ engineer: '', field: '', client: '' });
   const [rdsTemplates, setRdsTemplates] = useState({});
   const [data, setData] = useState({});
   const [error, setError] = useState('');
@@ -42,16 +42,17 @@ export default function NewWorkItemPage() {
     setError('');
     setBusy(true);
     try {
-      const notifyEmails = notify
-        .split(/[\s,;]+/)
-        .map((e) => e.trim())
-        .filter((e) => e.includes('@'));
+      const assigneesClean = {};
+      for (const r of ['engineer', 'field', 'client']) {
+        const v = (assignees[r] || '').trim();
+        if (v.includes('@')) assigneesClean[r] = v;
+      }
       const { workItem } = await api.createWorkItem({
         projectId: project.id,
         refCode: refCode.trim(),
         locationRef: locationRef.trim(),
         method,
-        notifyEmails,
+        assignees: assigneesClean,
         inspection: Object.keys(data).length ? { data } : undefined,
       });
       navigate(`/work-items/${workItem.id}`);
@@ -91,14 +92,27 @@ export default function NewWorkItemPage() {
           </label>
         </div>
 
+        <h3 className="section-title">Assign people to steps (optional)</h3>
+        <p className="muted small" style={{ marginTop: -6 }}>
+          Each person is emailed only at their step, with a link that creates their account in that role so they can
+          complete it. Leave blank to just notify the built-in role accounts.
+        </p>
+        <div className="form-row">
+          <label className="field">
+            <span>Engineer — spec &amp; approval</span>
+            <input className="input" type="email" value={assignees.engineer}
+              onChange={(e) => setAssignees((a) => ({ ...a, engineer: e.target.value }))} placeholder="engineer@example.com" />
+          </label>
+          <label className="field">
+            <span>Field / Diver — execution &amp; QA</span>
+            <input className="input" type="email" value={assignees.field}
+              onChange={(e) => setAssignees((a) => ({ ...a, field: e.target.value }))} placeholder="diver@example.com" />
+          </label>
+        </div>
         <label className="field">
-          <span>Notify (extra emails)</span>
-          <input className="input" value={notify} onChange={(e) => setNotify(e.target.value)}
-            placeholder="engineer@example.com, client@example.com" />
-          <span className="tform-help">
-            Optional. These addresses are emailed — alongside the responsible role — at each step that needs them
-            (spec, execution, QA sign-off, close). Separate with commas.
-          </span>
+          <span>Client — sign-off</span>
+          <input className="input" type="email" value={assignees.client}
+            onChange={(e) => setAssignees((a) => ({ ...a, client: e.target.value }))} placeholder="client@example.com" />
         </label>
 
         <h3 className="section-title">{def?.title || 'Repair Detail Sheet'}</h3>

@@ -1,9 +1,9 @@
+import { useState, useRef, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth, ROLE_LABELS } from '../contexts/AuthContext';
 
-// Shared top bar used by the authenticated Layout and the public Help page.
-// Adapts to auth state: signed-in users get the full nav + sign-out; guests
-// get a minimal bar with a Help link and a Sign in button.
+// Shared top bar used by the authenticated Layout and the public Help/work-item
+// pages. Signed-in users get the nav + an account menu; guests get a minimal bar.
 const NAV = [
   { to: '/', label: 'Repair register' },
   { to: '/timeline', label: 'Event timeline' },
@@ -14,6 +14,19 @@ export default function TopBar() {
   const { user, logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    function onDocClick(e) {
+      if (menuRef.current && !menuRef.current.contains(e.target)) setMenuOpen(false);
+    }
+    document.addEventListener('mousedown', onDocClick);
+    return () => document.removeEventListener('mousedown', onDocClick);
+  }, []);
+
+  // Close the menu whenever the route changes.
+  useEffect(() => { setMenuOpen(false); }, [location.pathname]);
 
   async function handleLogout() {
     await logout();
@@ -38,12 +51,28 @@ export default function TopBar() {
                 </Link>
               ))}
             </nav>
-            <div className="topbar-right">
-              <div className="whoami">
-                <span className="whoami-name">{user.name}</span>
-                <span className={`role-chip role-${user.role}`}>{ROLE_LABELS[user.role] || user.role}</span>
-              </div>
-              <button className="btn btn-ghost btn-sm" onClick={handleLogout}>Sign out</button>
+            <div className="topbar-right" ref={menuRef}>
+              <button className="account-btn" onClick={() => setMenuOpen((o) => !o)} aria-haspopup="true" aria-expanded={menuOpen}>
+                <span className="account-avatar">{(user.name || user.email || '?').charAt(0).toUpperCase()}</span>
+                <span className="account-meta">
+                  <span className="whoami-name">{user.name}</span>
+                  <span className={`role-chip role-${user.role}`}>{ROLE_LABELS[user.role] || user.role}</span>
+                </span>
+                <span className="account-caret">▾</span>
+              </button>
+              {menuOpen && (
+                <div className="account-menu card" role="menu">
+                  <div className="account-menu-head">
+                    <div className="account-menu-name">{user.name}</div>
+                    <div className="muted small">{user.email}</div>
+                  </div>
+                  <Link to="/account" className="account-menu-item" role="menuitem">Account settings</Link>
+                  {user.role === 'admin_pm' && (
+                    <Link to="/users" className="account-menu-item" role="menuitem">Manage users</Link>
+                  )}
+                  <button className="account-menu-item danger" role="menuitem" onClick={handleLogout}>Sign out</button>
+                </div>
+              )}
             </div>
           </>
         ) : (

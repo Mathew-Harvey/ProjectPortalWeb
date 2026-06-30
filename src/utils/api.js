@@ -58,6 +58,13 @@ export const api = {
   logout: () => request('/auth/logout', { method: 'POST' }),
   me: () => request('/auth/me'),
   claimInvite: (token, password) => request('/auth/claim-invite', { method: 'POST', body: JSON.stringify({ token, password }) }),
+  updateProfile: (name) => request('/auth/profile', { method: 'PUT', body: JSON.stringify({ name }) }),
+  changePassword: (currentPassword, newPassword) => request('/auth/change-password', { method: 'POST', body: JSON.stringify({ currentPassword, newPassword }) }),
+
+  // Users (admin_pm)
+  listUsers: () => request('/users'),
+  createUser: (body) => request('/users', { method: 'POST', body: JSON.stringify(body) }),
+  updateUser: (id, body) => request(`/users/${id}`, { method: 'PUT', body: JSON.stringify(body) }),
 
   // Projects
   listProjects: () => request('/projects'),

@@ -66,6 +66,14 @@ export function AuthProvider({ children }) {
     } catch { /* ignore */ }
   }
 
+  async function refreshUser() {
+    try {
+      const data = await api.me();
+      setUser(data.user);
+      setOrg(data.organisation || null);
+    } catch { /* ignore */ }
+  }
+
   async function logout() {
     try { await api.logout(); } catch { /* ignore */ }
     setUser(null);
@@ -73,7 +81,7 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, org, loading, login, register, claim, logout }}>
+    <AuthContext.Provider value={{ user, org, loading, login, register, claim, logout, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );
