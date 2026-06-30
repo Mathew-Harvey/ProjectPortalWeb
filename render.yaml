@@ -1,0 +1,20 @@
+# Render Blueprint for the Franmarine Project Portal web app (static SPA).
+# Use via New → Blueprint to provision with the correct SPA rewrite already set,
+# so deep links like /work-items/:id resolve to index.html instead of 404ing.
+services:
+  - type: web
+    name: projectportal-web
+    runtime: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    pullRequestPreviewsEnabled: false
+    routes:
+      # SPA fallback: serve index.html for any path so client-side routing works.
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_URL
+        sync: false # e.g. https://projectportal-api.onrender.com (no trailing slash, no /api)
+      - key: VITE_DEMO_PASSWORD
+        sync: false # Match the API's SEED_PASSWORD so the demo-login buttons work
