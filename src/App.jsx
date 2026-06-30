@@ -56,12 +56,13 @@ export default function App() {
       <Routes>
         <Route path="/login" element={<GuestRoute><LoginPage /></GuestRoute>} />
         <Route path="/register" element={<GuestRoute><RegisterPage /></GuestRoute>} />
+        {/* Help is public — reachable by anyone, signed in or not. */}
+        <Route path="/help" element={<HelpPage />} />
         <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
           <Route path="/" element={<DashboardPage />} />
           <Route path="/work-items/new" element={<NewWorkItemPage />} />
           <Route path="/work-items/:id" element={<WorkItemPage />} />
           <Route path="/timeline" element={<TimelinePage />} />
-          <Route path="/help" element={<HelpPage />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

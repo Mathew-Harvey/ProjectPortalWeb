@@ -58,6 +58,9 @@ export default function LoginPage() {
           </button>
         </form>
         <p className="muted auth-foot">No account? <Link to="/register">Register</Link></p>
+        <p className="muted auth-foot" style={{ marginTop: 4 }}>
+          New to the portal? <Link to="/help">How this portal works</Link>
+        </p>
 
         <div className="demo-box">
           <div className="demo-title">Demo logins (password <code>{DEMO_PASSWORD}</code>)</div>

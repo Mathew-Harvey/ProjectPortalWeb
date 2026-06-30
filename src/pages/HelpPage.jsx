@@ -1,5 +1,9 @@
 // In-app help: teaches the PRINCE2 basics this portal is built on, and shows
 // where each idea lives in the app. Screenshots live in /public/help.
+//
+// Public route — reachable by anyone (signed in or not). It renders its own
+// shell + TopBar so it works whether or not the user is authenticated.
+import TopBar from '../components/TopBar';
 
 function Figure({ src, alt, caption }) {
   return (
@@ -12,7 +16,10 @@ function Figure({ src, alt, caption }) {
 
 export default function HelpPage() {
   return (
-    <div className="help-doc">
+    <div className="app-shell">
+      <TopBar />
+      <main className="content">
+        <div className="content-inner help-doc">
       <div className="page-head">
         <div>
           <h1>How this portal works — PRINCE2 in practice</h1>
@@ -268,6 +275,8 @@ export default function HelpPage() {
           by them.
         </p>
       </section>
+        </div>
+      </main>
     </div>
   );
 }
